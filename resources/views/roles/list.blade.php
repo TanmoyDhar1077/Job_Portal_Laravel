@@ -22,7 +22,9 @@
                             <tr>
                                 <th class="px-4 py-3 text-left">#</th>
                                 <th class="px-4 py-3 text-left">Name</th>
+                                <th class="px-4 py-3 text-left">Permissions</th>
                                 <th class="px-4 py-3 text-left">Created At</th>
+                                <th class="px-4 py-3 text-left">Updated At</th>
                                 <th class="px-4 py-3 text-center">Actions</th>
                             </tr>
                         </thead>
@@ -33,12 +35,16 @@
                                     <tr>
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $loop->iteration }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $role->name }}</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">{{ $role->permissions->pluck('name')->implode(', ') }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">
                                             {{ $role->created_at->format('d-m-Y h:i A') }}
                                         </td>
+                                        <td class="px-4 py-3 whitespace-nowrap">
+                                            {{ $role->updated_at->format('d-m-Y h:i A') }}
+                                        </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-center">
                                             <div class="flex justify-center space-x-2">
-                                                <a href="#"
+                                                <a href="{{ route('roles.edit', $role->id) }}"
                                                     class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
                                                     Edit
                                                 </a>
