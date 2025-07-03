@@ -21,21 +21,28 @@
                         @csrf
                         <div class="flex flex-col gap-4">
                             <label class="text-xl font-semibold">Name</label>
-                            <input value="{{ old('name') }}" type="text" name="name" placeholder="Type here"
+                            <input value="{{ old('name',$role->name) }}" type="text" name="name" placeholder="Type here"
                                 class="w-1/2 rounded-md ring-slate-600 focus:ring-slate-600 focus:border-slate-600" />
 
                             @error('name')
                                 <p class="text-sm font-medium text-red-600">{{ $message }}</p>
                             @enderror
 
-                            <div class="grid grid-cols-5">
+                            <div class="grid grid-cols-5 gap-2">
                                 @if ($permissions->isNotEmpty())
                                     @foreach ($permissions as $permission)
-
-                                        <div class="flex gap-2 items-center">
-                                            <input class="cursor-pointer" type="checkbox" id="permission{{ $permission->id }}" name="permission[]" value="{{ $permission->name }}">
-                                            <label class="cursor-pointer" for="permission{{ $permission->id }}">{{ $permission->name }}</label>
-                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <input
+                                                class="cursor-pointer"
+                                                type="checkbox"
+                                                id="permission{{ $permission->id }}"
+                                                name="permission[]"
+                                                value="{{ $permission->name }}"
+                                                {{ $hasPermissions->contains($permission->name) ? 'checked' : '' }}>
+                                            <label class="cursor-pointer" for="permission{{      $permission->id }}">
+                                                {{ $permission->name }}
+                                            </label>
+                                     </div>
                                     @endforeach
                                 @endif
                             </div>
