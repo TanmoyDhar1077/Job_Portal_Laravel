@@ -54,7 +54,7 @@ class PermissionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('permission.edit',$id)->withInput()->withErrors($validator);
+            return redirect()->route('permission.edit', $id)->withInput()->withErrors($validator);
         } else {
             $permission->name = $request->name;
             $permission->save();
@@ -65,10 +65,10 @@ class PermissionController extends Controller
     //This method will delete permission in DB
     public function destroy($id)
     {
-        $permission = Permission::find($id);
+        $permission = Permission::findOrFail($id);
         $permission->delete();
 
-        return redirect()->route('permission.index')->with('success', 'Permission deleted successfully.');
+        return response()->json(['success' => true]);
     }
 
 }

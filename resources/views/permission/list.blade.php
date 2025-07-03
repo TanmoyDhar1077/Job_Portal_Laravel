@@ -22,14 +22,14 @@
                             <tr>
                                 <th class="px-4 py-3 text-left">#</th>
                                 <th class="px-4 py-3 text-left">Name</th>
-                                <th class="px-4 py-3 text-left">Created At</th>                                
+                                <th class="px-4 py-3 text-left">Created At</th>
                                 <th class="px-4 py-3 text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
                             @if($permissions->isNotEmpty())
                                 @foreach($permissions as $permission)
-                                    <tr>
+                                    <tr id="permission-row-{{ $permission->id }}">
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $loop->iteration }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $permission->name }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">
@@ -41,8 +41,10 @@
                                                     class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
                                                     Edit
                                                 </a>
-                                                <a href="{{ route('permission.destroy', $permission->id) }}"
-                                                    class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">Delete</a>
+                                                <button onclick="deletePermission({{ $permission->id }})"
+                                                    class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
+                                                    Delete
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -64,3 +66,45 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    function deletePermission(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This permission will be deleted permanently!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/permissions/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Delete failed');
+                    return response.json();
+                })
+                .then(data => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Permission deleted successfully',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    document.getElementById(`permission-row-${id}`).remove();
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Something went wrong!', 'error');
+                });
+            }
+        });
+    }
+</script>

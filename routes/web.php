@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,14 +18,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
+    // Permission
     Route::get('/permissions', [PermissionController::class, 'index'])->name('permission.index');
     Route::post('/permissions', [PermissionController::class, 'store'])->name('permission.store');
     Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permission.create');
     Route::get('/permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permission.edit');
     Route::post('/permissions/{id}', [PermissionController::class, 'update'])->name('permission.update');
-    
     Route::delete('/permissions/{id}', [PermissionController::class, 'destroy'])->name('permission.destroy');
+
+    // Role
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
 
 });
 
