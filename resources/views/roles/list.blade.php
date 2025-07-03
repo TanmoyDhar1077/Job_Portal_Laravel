@@ -26,15 +26,44 @@
                                 <th class="px-4 py-3 text-center">Actions</th>
                             </tr>
                         </thead>
-                        
-                        <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
 
+                        <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
+                            @if($roles->isNotEmpty())
+                                @foreach($roles as $role)
+                                    <tr>
+                                        <td class="px-4 py-3 whitespace-nowrap">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">{{ $role->name }}</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">
+                                            {{ $role->created_at->format('d-m-Y h:i A') }}
+                                        </td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-center">
+                                            <div class="flex justify-center space-x-2">
+                                                <a href="#"
+                                                    class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
+                                                    Edit
+                                                </a>
+                                                <button 
+                                                    class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="4" class="px-4 py-3 text-center text-sm text-gray-500">No permissions
+                                        found.</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
             <!--  Pagination -->
-            
+            <div class="py-4">
+                {{ $roles->links() }}
+            </div>
         </div>
     </div>
 </x-app-layout>
@@ -43,7 +72,7 @@
     function deletePermission(id) {
         Swal.fire({
             title: 'Are you sure?',
-            text: "This permission will be deleted permanently!",
+            text: "This role will be deleted permanently!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -71,7 +100,7 @@
                         showConfirmButton: false,
                         timer: 2000
                     });
-                    document.getElementById(`permission-row-${id}`).remove();
+                    document.getElementById(`role-row-${id}`).remove();
                 })
                 .catch(error => {
                     Swal.fire('Error', 'Something went wrong!', 'error');

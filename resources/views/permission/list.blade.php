@@ -23,6 +23,7 @@
                                 <th class="px-4 py-3 text-left">#</th>
                                 <th class="px-4 py-3 text-left">Name</th>
                                 <th class="px-4 py-3 text-left">Created At</th>
+                                <th class="px-4 py-3 text-left">Updated At</th>
                                 <th class="px-4 py-3 text-center">Actions</th>
                             </tr>
                         </thead>
@@ -34,6 +35,9 @@
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $permission->name }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">
                                             {{ $permission->created_at->format('d-m-Y h:i A') }}
+                                        </td>
+                                        <td class="px-4 py-3 whitespace-nowrap">
+                                            {{ $permission->updated_at->format('d-m-Y h:i A') }}
                                         </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-center">
                                             <div class="flex justify-center space-x-2">
