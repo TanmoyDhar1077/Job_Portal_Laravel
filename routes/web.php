@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -34,6 +35,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/roles/{id}', [RoleController::class,'update'])->name('roles.update');
     Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
+
+    // Jobs
+    Route::get('/jobs',[JobController::class,'index'])->name('jobPost.index');
+    Route::post('/jobs',[JobController::class,'store'])->name('jobPost.store');
+    Route::get('/jobs/create',[JobController::class,'create'])->name('jobPost.create');
+    Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobPost.show');
 });
 
 require __DIR__ . '/auth.php';
