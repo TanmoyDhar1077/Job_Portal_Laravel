@@ -49,7 +49,7 @@
                                                     Edit
                                                 </a>
                                                 <button 
-                                                    onclick="deletePermission({{ $role->id }})"
+                                                    onclick="deleteRole('{{ $role->id }}')"
                                                     class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
                                                     Delete
                                                 </button>
@@ -76,7 +76,7 @@
 </x-app-layout>
 
 <script>
-    function deletePermission(id) {
+    function deleteRole(id) {
         Swal.fire({
             title: 'Are you sure?',
             text: "This role will be deleted permanently!",
@@ -111,7 +111,7 @@
                 })
                 .catch(error => {
                     Swal.fire('Error', 'Something went wrong!', 'error');
-                    console.log(error)
+                    // console.log(error)
                 });
             }
         });

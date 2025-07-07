@@ -45,7 +45,7 @@
                                                     class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
                                                     Edit
                                                 </a>
-                                                <button onclick="deletePermission({{ $permission->id }})"
+                                                <button onclick="deletePermission('{{ $permission->id }}')"
                                                     class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
                                                     Delete
                                                 </button>

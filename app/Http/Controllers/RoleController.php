@@ -38,8 +38,8 @@ class RoleController extends Controller
                 foreach ($request->permission as $name) {
                     $role->givePermissionTo($name);
                 }
-                return redirect()->route('roles.index')->with('success', 'Role Added Successfully.');
             }
+            return redirect()->route('roles.index')->with('success', 'Role Added Successfully.');
         }
     }
 
