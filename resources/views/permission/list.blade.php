@@ -107,6 +107,7 @@
                 })
                 .catch(error => {
                     Swal.fire('Error', 'Something went wrong!', 'error');
+                    console.log(error)
                 });
             }
         });

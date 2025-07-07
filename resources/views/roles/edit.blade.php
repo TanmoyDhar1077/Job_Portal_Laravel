@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-semibold text-gray-800">
-                {{ __('Roles / Create') }}
+                {{ __('Roles / Update') }}
             </h2>
 
             <a href="{{ route('roles.index') }}"
@@ -17,7 +17,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <!-- {{ __("You're logged in!") }} -->
-                    <form action="{{ route('roles.store') }}" method="post">
+                    <form action="{{ route('roles.update',$role->id) }}" method="post">
                         @csrf
                         <div class="flex flex-col gap-4">
                             <label class="text-xl font-semibold">Name</label>
@@ -50,7 +50,7 @@
 
                         <button type="submit"
                             class="inline-flex items-center justify-center px-6 py-2 text-sm font-medium text-white bg-slate-600 rounded-lg hover:bg-slate-700 transition duration-200 mt-4">
-                            Submit
+                            Update Role
                         </button>
                     </form>
                 </div>

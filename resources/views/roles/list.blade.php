@@ -32,7 +32,7 @@
                         <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
                             @if($roles->isNotEmpty())
                                 @foreach($roles as $role)
-                                    <tr>
+                                    <tr id="role-row-{{ $role->id }}">
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $loop->iteration }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $role->name }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $role->permissions->pluck('name')->implode(', ') }}</td>
@@ -49,6 +49,7 @@
                                                     Edit
                                                 </a>
                                                 <button 
+                                                    onclick="deletePermission({{ $role->id }})"
                                                     class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
                                                     Delete
                                                 </button>
@@ -74,7 +75,7 @@
     </div>
 </x-app-layout>
 
-<!-- <script>
+<script>
     function deletePermission(id) {
         Swal.fire({
             title: 'Are you sure?',
@@ -86,7 +87,7 @@
             confirmButtonText: 'Yes, delete it!',
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`/permissions/${id}`, {
+                fetch(`/roles/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -110,8 +111,9 @@
                 })
                 .catch(error => {
                     Swal.fire('Error', 'Something went wrong!', 'error');
+                    console.log(error)
                 });
             }
         });
     }
-</script> -->
+</script>

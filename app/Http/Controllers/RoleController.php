@@ -41,9 +41,8 @@ class RoleController extends Controller
                 return redirect()->route('roles.index')->with('success', 'Role Added Successfully.');
             }
         }
-
-
     }
+
     //This method show edit Role Page
     public function edit($id)
     {
@@ -51,6 +50,37 @@ class RoleController extends Controller
         $hasPermissions = $role->permissions->pluck('name');
         $permissions = Permission::orderBy('created_at', 'asc')->get();
         // dd($permissions);
-        return view('roles.edit',['hasPermissions'=> $hasPermissions,'permissions'=> $permissions, 'role'=> $role]);
+        return view('roles.edit', ['hasPermissions' => $hasPermissions, 'permissions' => $permissions, 'role' => $role]);
     }
+
+    // This method Update role and store in DB
+    public function update($id, Request $request)
+    {
+        $role = Role::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            "name" => 'required|min:3|unique:roles,name,' . $id,
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('roles.edit', $id)->withInput()->withErrors($validator);
+        } else {
+            $role->name = $request->name;
+            $role->save();
+            if (!empty($request->permission)) {
+                $role->syncPermissions($request->permission);
+            } else {
+                $role->syncPermissions([]);
+            }
+            return redirect()->route('roles.index')->with('success', 'Role Updated Successfully.');
+        }
+    }
+
+    //This method Delete Role in DB
+    public function destroy($id) {
+        $role = Role::findOrFail($id);
+        $role->delete();
+        return response()->json(['success' => true]);
+    } 
+
 }
