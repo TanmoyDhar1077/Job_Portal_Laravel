@@ -35,7 +35,7 @@ class JobController extends Controller
         $validator = Validator::make($request->all(), [
             'job_title' => 'required|min:3|max:255',
             'job_description' => 'nullable|string',
-            'company_name'=> 'required|string|min:3|max:255',
+            'company_name' => 'required|string|min:3|max:255',
             'salary_range' => 'required|string',
             'location' => 'required|string',
             'job_type' => 'required|in:full-time,part-time,internship,contract',
@@ -53,7 +53,7 @@ class JobController extends Controller
                 'job_description' => $request->job_description,
                 'salary_range' => $request->salary_range,
                 'location' => $request->location,
-                'company_name'=>$request->company_name,
+                'company_name' => $request->company_name,
                 'job_type' => $request->job_type,
                 'job_level' => $request->job_level,
                 'experience_required' => $request->experience_required,
@@ -75,7 +75,7 @@ class JobController extends Controller
     public function show(string $id)
     {
         $job = JobPost::findOrFail($id);
-        return view('jobs.show', ['job'=> $job]);
+        return view('jobs.show', ['job' => $job]);
     }
 
     /**
@@ -83,21 +83,8 @@ class JobController extends Controller
      */
     public function edit(string $id)
     {
-        $validator = Validator::make($request->all(), [
-            'job_title' => 'required|min:3|max:255',
-            'job_description' => 'nullable|string',
-            'company_name'=> 'required|string|min:3|max:255',
-            'salary_range' => 'required|string',
-            'location' => 'required|string',
-            'job_type' => 'required|in:full-time,part-time,internship,contract',
-            'job_level' => 'nullable|in:entry,mid,senior',
-            'experience_required' => 'nullable|integer|min:0',
-            'education_level' => 'nullable|string|max:255',
-            'application_deadline' => 'nullable|date|after_or_equal:today',
-            'is_active' => 'nullable|boolean',
-        ]);
-
-        
+        $job = JobPost::findOrFail($id); 
+        return view('jobs.edit', ['job'=> $job]);
     }
 
     /**

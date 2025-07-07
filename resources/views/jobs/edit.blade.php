@@ -16,13 +16,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form action="{{ route('jobPost.store') }}" method="POST">
+                    <form action="" method="POST">
                         @csrf
 
                         <div class="flex flex-col gap-4">
                             <!-- Job Title -->
                             <label class="text-sm font-semibold">Job Title</label>
-                            <input type="text" name="job_title" value="{{ old('job_title') }}"
+                            <input type="text" name="job_title" value="{{ old('job_title',$job->job_title) }}"
                                 placeholder="Enter job title"
                                 class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600" />
                             @error('job_title')
@@ -30,7 +30,7 @@
                             @enderror
                             <!-- Company Name -->
                             <label class="text-sm font-semibold">Company Name</label>
-                            <input type="text" name="company_name" value="{{ old('company_name') }}"
+                            <input type="text" name="company_name" value="{{ old('company_name', $job->company_name ) }}"
                                 placeholder="Enter Company Name"
                                 class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600" />
                             @error('company_name')
@@ -40,14 +40,14 @@
                             <label class="text-sm font-semibold">Job Description</label>
                             <textarea name="job_description" rows="4"
                                 placeholder="Describe the job responsibilities and requirements"
-                                class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600">{{ old('job_description') }}</textarea>
+                                class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600">{{ old('job_description',$job->job_description) }}</textarea>
                             @error('job_description')
                                 <p class="text-sm text-red-600">{{ $message }}</p>
                             @enderror
 
                             <!-- Salary Range -->
                             <label class="text-sm font-semibold">Salary Range</label>
-                            <input type="text" name="salary_range" value="{{ old('salary_range') }}"
+                            <input type="text" name="salary_range" value="{{ old('salary_range',$job->salary_range) }}"
                                 placeholder="e.g. $4000 - $6000 per month"
                                 class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600" />
                             @error('salary_range')
@@ -56,7 +56,7 @@
 
                             <!-- Location -->
                             <label class="text-sm font-semibold">Location</label>
-                            <input type="text" name="location" value="{{ old('location') }}"
+                            <input type="text" name="location" value="{{ old('location',$job->location) }}"
                                 placeholder="Enter job location"
                                 class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600" />
                             @error('location')
@@ -92,7 +92,7 @@
 
                             <!-- Experience -->
                             <label class="text-sm font-semibold">Experience Required (years)</label>
-                            <input type="number" name="experience_required" min="0" value="{{ old('experience_required') }}"
+                            <input type="number" name="experience_required" min="0" value="{{ old('experience_required',$job->experience_required) }}"
                                 placeholder="Years of experience required"
                                 class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600" />
                             @error('experience_required')
@@ -101,7 +101,7 @@
 
                             <!-- Education -->
                             <label class="text-sm font-semibold">Education Level</label>
-                            <input type="text" name="education_level" value="{{ old('education_level') }}"
+                            <input type="text" name="education_level" value="{{ old('education_level',$job->education_level) }}"
                                 placeholder="e.g. Bachelor, Master, Diploma"
                                 class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600" />
                             @error('education_level')

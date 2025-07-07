@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/jobs',[JobController::class,'store'])->name('jobPost.store');
     Route::get('/jobs/create',[JobController::class,'create'])->name('jobPost.create');
     Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobPost.show');
+    Route::get('/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobPost.edit');
 });
 
 require __DIR__ . '/auth.php';

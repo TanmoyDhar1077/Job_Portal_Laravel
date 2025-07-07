@@ -54,7 +54,7 @@
                                             </a>
 
                                             <!-- Edit -->
-                                            <a href=""
+                                            <a href="{{ route('jobPost.edit',$job->id) }}"
                                                 class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
                                                 Edit
                                             </a>
