@@ -55,7 +55,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="4" class="px-4 py-3 text-center text-sm text-gray-500">No permissions
+                                    <td colspan="5" class="px-4 py-3 text-center text-sm text-gray-500">No permissions
                                         found.</td>
                                 </tr>
                             @endif
