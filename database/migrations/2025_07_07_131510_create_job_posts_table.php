@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('job_title');
             $table->text('job_description')->nullable();
             $table->string('salary_range');
+            $table->string('company_name');
             $table->string('location');
 
             // Job Category & Type

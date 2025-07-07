@@ -28,7 +28,14 @@
                             @error('job_title')
                                 <p class="text-sm text-red-600">{{ $message }}</p>
                             @enderror
-
+                            <!-- Company Name -->
+                            <label class="text-sm font-semibold">Company Name</label>
+                            <input type="text" name="company_name" value="{{ old('company_name') }}"
+                                placeholder="Enter Company Name"
+                                class="w-full rounded-md border-gray-300 focus:ring-slate-600 focus:border-slate-600" />
+                            @error('company_name')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                             <!-- Job Description -->
                             <label class="text-sm font-semibold">Job Description</label>
                             <textarea name="job_description" rows="4"

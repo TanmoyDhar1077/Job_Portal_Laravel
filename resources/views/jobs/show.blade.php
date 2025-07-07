@@ -23,6 +23,11 @@
                     </div>
 
                     <div>
+                        <span class="font-semibold">Company Name:</span>
+                        <div>{{ $job->company_name }}</div>
+                    </div>
+
+                    <div>
                         <span class="font-semibold">Location:</span>
                         <div>{{ $job->location }}</div>
                     </div>

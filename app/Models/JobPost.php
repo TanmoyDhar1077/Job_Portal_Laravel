@@ -10,6 +10,7 @@ class JobPost extends Model
         'job_title',
         'job_description',
         'salary_range',
+        'company_name',
         'location',
         'job_type',
         'job_level',
