@@ -83,8 +83,8 @@ class JobController extends Controller
      */
     public function edit(string $id)
     {
-        $job = JobPost::findOrFail($id); 
-        return view('jobs.edit', ['job'=> $job]);
+        $job = JobPost::findOrFail($id);
+        return view('jobs.edit', ['job' => $job]);
     }
 
     /**
@@ -92,14 +92,52 @@ class JobController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'job_title' => 'required|min:3|max:255',
+            'job_description' => 'nullable|string',
+            'company_name' => 'required|string|min:3|max:255',
+            'salary_range' => 'required|string',
+            'location' => 'required|string',
+            'job_type' => 'required|in:full-time,part-time,internship,contract',
+            'job_level' => 'nullable|in:entry,mid,senior',
+            'experience_required' => 'nullable|integer|min:0',
+            'education_level' => 'nullable|string|max:255',
+            'application_deadline' => 'nullable|date|after_or_equal:today',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('jobPost.edit', $id)
+                ->withInput()
+                ->withErrors($validator);
+        } else {
+
+            $job = JobPost::findOrFail($id);
+            $job->update([
+                'job_title' => $request->job_title,
+                'job_description' => $request->job_description,
+                'company_name' => $request->company_name,
+                'salary_range' => $request->salary_range,
+                'location' => $request->location,
+                'job_type' => $request->job_type,
+                'job_level' => $request->job_level,
+                'experience_required' => $request->experience_required,
+                'education_level' => $request->education_level,
+                'application_deadline' => $request->application_deadline,
+                'is_active' => $request->has('is_active') ? 1 : 0,
+            ]);
+            return redirect()->route('jobPost.index')->with('success', 'Job post updated successfully.');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $job = JobPost::findOrFail($id);
+        $job->delete();
+        return response()->json(['success' => true]);
     }
 }

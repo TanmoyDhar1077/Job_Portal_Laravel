@@ -42,6 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/jobs/create',[JobController::class,'create'])->name('jobPost.create');
     Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobPost.show');
     Route::get('/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobPost.edit');
+    Route::post('/jobs/{id}', [JobController::class, 'update'])->name('jobPost.update');
+    Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('jobPost.destroy');
+
 });
 
 require __DIR__ . '/auth.php';
