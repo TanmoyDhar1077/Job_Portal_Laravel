@@ -4,6 +4,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,6 +45,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobPost.edit');
     Route::post('/jobs/{id}', [JobController::class, 'update'])->name('jobPost.update');
     Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('jobPost.destroy');
+
+    // Users
+    Route::get('/users',[UserController::class,'index'])->name('users.index');
+    // Route::post('/jobs',[JobController::class,'store'])->name('jobPost.store');
+    // Route::get('/jobs/create',[JobController::class,'create'])->name('jobPost.create');
+    // Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobPost.show');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    // Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('jobPost.destroy');
 
 });
 
