@@ -11,7 +11,7 @@ use Illuminate\Routing\Controllers\Middleware;
 
 class JobController extends Controller implements HasMiddleware
 {
-    public static function middleware(): array 
+    public static function middleware(): array
     {
         return [
             new Middleware('permission:View Jobs', only: ['index']),
@@ -21,17 +21,47 @@ class JobController extends Controller implements HasMiddleware
             new Middleware('permission:Delete Jobs', only: ['destroy']),
         ];
     }
-    
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = JobPost::orderBy("created_at", "desc")->paginate(10);
-        return view("jobs.list", [
-            "jobs" => $jobs
+        $query = JobPost::query();
+
+        // Search functionality
+        if ($request->has('search_btn') && $request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('job_title', 'like', "%{$request->search}%")
+                    ->orWhere('company_name', 'like', "%{$request->search}%")
+                    ->orWhere('location', 'like', "%{$request->search}%");
+            });
+        }
+
+        // Filter functionality
+        if ($request->has('filter_btn')) {
+            if ($request->filled('job_type')) {
+                $query->where('job_type', $request->job_type);
+            }
+
+            if ($request->filled('location')) {
+                $query->where('location', $request->location);
+            }
+        }
+
+        $jobs = $query->latest()->paginate(10);
+
+        // Pass job types and unique locations to the view
+        $jobTypes = JobPost::select('job_type')->distinct()->pluck('job_type');
+        $locations = JobPost::select('location')->distinct()->pluck('location');
+
+        return view('jobs.list', [
+            'jobs' => $jobs,
+            'jobTypes' => $jobTypes,
+            'locations' => $locations,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

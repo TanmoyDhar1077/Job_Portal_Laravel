@@ -5,10 +5,10 @@
                 {{ __('Job Posts') }}
             </h2>
             @can('Create Jobs')
-            <a href="{{ route('jobPost.create') }}"
-                class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
-                Create
-            </a>
+                <a href="{{ route('jobPost.create') }}"
+                    class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
+                    Create
+                </a>
             @endcan
         </div>
     </x-slot>
@@ -16,6 +16,66 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center mb-6">
+
+                <!-- Filter Section -->
+                <form method="GET" action="{{ route('jobPost.index') }}" class="flex flex-wrap items-center gap-3">
+                    <!-- Job Type -->
+                    <div>
+                        <label for="job_type" class="block text-sm font-medium text-gray-700 mb-1">Job Type</label>
+                        <select name="job_type" id="job_type"
+                            class="w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                            <option value="">All Types</option>
+                            @foreach ($jobTypes as $type)
+                                <option value="{{ $type }}" {{ request('job_type') == $type ? 'selected' : '' }}>
+                                    {{ ucfirst($type) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Location -->
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                        <select name="location" id="location"
+                            class="w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                            <option value="">All Locations</option>
+                            @foreach ($locations as $location)
+                                <option value="{{ $location }}" {{ request('location') == $location ? 'selected' : '' }}>
+                                    {{ $location }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Filter Button -->
+                    <div class="mt-5 md:mt-6">
+                        <button type="submit" name="filter_btn"
+                            class="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-md text-sm shadow-sm">
+                            Filter
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Search Section -->
+                <form method="GET" action="{{ route('jobPost.index') }}"
+                    class="flex items-end justify-end gap-3 mt-4 md:mt-0">
+                    <div class="w-full md:w-auto">
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                        <input type="text" name="search" id="search" value="{{ request('search') }}"
+                            placeholder="Search jobs..."
+                            class="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    </div>
+
+                    <div>
+                        <button type="submit" name="search_btn"
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm shadow-sm">
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mx-4 md:mx-0">
                 <div class="overflow-x-auto bg-white rounded-xl shadow-md">
                     <table class="min-w-full table-auto">
@@ -66,10 +126,10 @@
 
                                             <!-- Delete -->
                                             @can('Delete Jobs')
-                                            <button onclick="deleteJob('{{ $job->id }}')"
-                                                class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
-                                                Delete
-                                            </button>
+                                                <button onclick="deleteJob('{{ $job->id }}')"
+                                                    class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
+                                                    Delete
+                                                </button>
                                             @endcan
                                         </div>
                                     </td>
