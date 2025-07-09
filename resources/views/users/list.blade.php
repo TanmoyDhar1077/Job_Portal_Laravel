@@ -24,7 +24,7 @@
                                 <th class="px-4 py-3 text-left">#</th>
                                 <th class="px-4 py-3 text-left">Name</th>
                                 <th class="px-4 py-3 text-left">Email</th>
-                                <!-- <th class="px-4 py-3 text-left">Roles</th> -->
+                                <th class="px-4 py-3 text-left">Roles</th>
                                 <th class="px-4 py-3 text-left">Created At</th>
                                 <th class="px-4 py-3 text-left">Updated At</th>
                                 <th class="px-4 py-3 text-center">Actions</th>
@@ -37,7 +37,8 @@
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $loop->iteration }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $user->name }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $user->email }}</td>
-                                        {{--  <td class="px-4 py-3 whitespace-nowrap">{{ $roles->$role->name }}</td> --}}
+                                        <td class="px-4 py-3">{{ $user->roles->pluck('name')->implode(', ') }}
+                                        </td>
                                         <td class="px-4 py-3 whitespace-nowrap">
                                             {{ $user->created_at->format('d-m-Y h:i A') }}
                                         </td>
@@ -46,8 +47,8 @@
                                         </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-center">
                                             <div class="flex justify-center space-x-2">
-                                                
-                                                 <a href="{{ route('users.edit', $user->id) }}"
+
+                                                <a href="{{ route('users.edit', $user->id) }}"
                                                     class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
                                                     Edit
                                                 </a>
@@ -78,6 +79,47 @@
     </div>
 </x-app-layout>
 
+function deleteUser(id) {
+Swal.fire({
+title: 'Are you sure?',
+text: "This user will be deleted permanently!",
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#d33',
+cancelButtonColor: '#3085d6',
+confirmButtonText: 'Yes, delete it!',
+}).then((result) => {
+if (result.isConfirmed) {
+fetch(`/users/${id}`, {
+method: 'DELETE',
+headers: {
+'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+'Accept': 'application/json'
+}
+})
+.then(response => {
+if (!response.ok) throw new Error('Delete failed');
+return response.json();
+})
+.then(data => {
+Swal.fire({
+toast: true,
+position: 'top-end',
+icon: 'success',
+title: 'User deleted successfully',
+showConfirmButton: false,
+timer: 2000
+});
+document.getElementById(`user-row-${id}`).remove();
+})
+.catch(error => {
+Swal.fire('Error', 'Something went wrong!', 'error');
+console.error(error);
+});
+}
+});
+}
+</script> -->
 <script>
     function deleteUser(id) {
         Swal.fire({
@@ -96,12 +138,10 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'Accept': 'application/json'
                     }
-                })
-                .then(response => {
+                }).then(response => {
                     if (!response.ok) throw new Error('Delete failed');
                     return response.json();
-                })
-                .then(data => {
+                }).then(data => {
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
@@ -111,8 +151,7 @@
                         timer: 2000
                     });
                     document.getElementById(`user-row-${id}`).remove();
-                })
-                .catch(error => {
+                }).catch(error => {
                     Swal.fire('Error', 'Something went wrong!', 'error');
                     console.error(error);
                 });

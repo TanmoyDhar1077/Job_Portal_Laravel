@@ -17,8 +17,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <form action="{{ route('users.update', $user->id) }}" method="post">
+                    <form action="{{ route('users.update', $user->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="flex flex-col gap-4">
                             <!-- Name -->
                             <label class="text-xl font-semibold">Name</label>
@@ -40,18 +41,16 @@
                             @enderror
                             <!-- Roles -->
                             <div class="grid grid-cols-5 gap-2">
-                                @if ($roles->isNotEmpty())
-                                    @foreach ($roles as $role)
-                                        <div class="flex items-center gap-2">
-                                            <input class="cursor-pointer" type="checkbox" id="role{{ $role->id }}"
-                                                name="roles[]" value="{{ $role->name }} {{ ($hasRoles->contains($role->id))? 'checked' : '' }}"
-                                                {{ $hasRoles->contains($role->id) ? 'checked' : '' }}>
-                                            <label class="cursor-pointer" for="role{{ $role->id }}">
-                                                {{ $role->name }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                @endif
+                                @foreach ($roles as $role)
+                                    <div class="flex items-center gap-2">
+                                        <input type="checkbox" name="roles[]" value="{{ $role->name }}"
+                                            id="role{{ $role->id }}" {{ $hasRoles->contains($role->id) ? 'checked' : '' }}
+                                            class="cursor-pointer">
+                                        <label for="role{{ $role->id }}" class="cursor-pointer">
+                                            {{ $role->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
 

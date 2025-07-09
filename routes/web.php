@@ -52,8 +52,8 @@ Route::middleware('auth')->group(function () {
     // Route::get('/jobs/create',[JobController::class,'create'])->name('jobPost.create');
     // Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobPost.show');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
-    // Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('jobPost.destroy');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 });
 

@@ -5,9 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\JobPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class JobController extends Controller
+
+class JobController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array 
+    {
+        return [
+            new Middleware('permission:View Jobs', only: ['index']),
+            new Middleware('permission:Edit Jobs', only: ['edit']),
+            new Middleware('permission:Create Jobs', only: ['create']),
+            new Middleware('permission:Job Details View', only: ['show']),
+            new Middleware('permission:Delete Jobs', only: ['destroy']),
+        ];
+    }
+    
     /**
      * Display a listing of the resource.
      */

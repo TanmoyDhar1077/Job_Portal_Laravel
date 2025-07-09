@@ -35,7 +35,7 @@
                                     <tr id="role-row-{{ $role->id }}">
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $loop->iteration }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">{{ $role->name }}</td>
-                                        <td class="px-4 py-3 whitespace-nowrap">{{ $role->permissions->pluck('name')->implode(', ') }}</td>
+                                        <td class="px-4 py-3">{{ $role->permissions->pluck('name')->implode(', ') }}</td>
                                         <td class="px-4 py-3 whitespace-nowrap">
                                             {{ $role->created_at->format('d-m-Y h:i A') }}
                                         </td>

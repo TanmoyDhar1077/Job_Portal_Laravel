@@ -80,7 +80,7 @@
 
                 <div class="mt-6">
                     <span class="font-semibold block mb-2">Job Description:</span>
-                    <div class="bg-gray-50 p-4 rounded-md text-gray-700 text-sm">
+                    <div class="p-4 rounded-md text-gray-700 text-sm">
                         {!! nl2br(e($job->job_description)) ?? 'No description provided.' !!}
                     </div>
                 </div>

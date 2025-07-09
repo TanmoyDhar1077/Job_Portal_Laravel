@@ -90,25 +90,25 @@
                         'Accept': 'application/json'
                     }
                 })
-                .then(response => {
-                    if (!response.ok) throw new Error('Delete failed');
-                    return response.json();
-                })
-                .then(data => {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Permission deleted successfully',
-                        showConfirmButton: false,
-                        timer: 2000
+                    .then(response => {
+                        if (!response.ok) throw new Error('Delete failed');
+                        return response.json();
+                    })
+                    .then(data => {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Permission deleted successfully',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        document.getElementById(`permission-row-${id}`).remove();
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Something went wrong!', 'error');
+                        console.log(error)
                     });
-                    document.getElementById(`permission-row-${id}`).remove();
-                })
-                .catch(error => {
-                    Swal.fire('Error', 'Something went wrong!', 'error');
-                    console.log(error)
-                });
             }
         });
     }
