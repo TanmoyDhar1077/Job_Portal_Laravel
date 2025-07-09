@@ -4,11 +4,12 @@
             <h2 class="text-xl font-semibold text-gray-800">
                 {{ __('Roles') }}
             </h2>
-
+            @can('Create Role')
             <a href="{{ route('roles.create') }}"
                 class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
                 Create
             </a>
+            @endcan
         </div>
     </x-slot>
 
@@ -44,15 +45,20 @@
                                         </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-center">
                                             <div class="flex justify-center space-x-2">
-                                                <a href="{{ route('roles.edit', $role->id) }}"
-                                                    class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
-                                                    Edit
-                                                </a>
-                                                <button 
-                                                    onclick="deleteRole('{{ $role->id }}')"
-                                                    class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
-                                                    Delete
-                                                </button>
+                                                @can('Edit Role')
+                                                    <a href="{{ route('roles.edit', $role->id) }}"
+                                                        class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
+                                                        Edit
+                                                    </a>
+                                                @endcan
+
+                                                @can('Delete Role')
+                                                    <button onclick="deleteRole('{{ $role->id }}')"
+                                                        class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
+                                                        Delete
+                                                    </button>
+                                                @endcan
+
                                             </div>
                                         </td>
                                     </tr>
@@ -94,25 +100,25 @@
                         'Accept': 'application/json'
                     }
                 })
-                .then(response => {
-                    if (!response.ok) throw new Error('Delete failed');
-                    return response.json();
-                })
-                .then(data => {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Permission deleted successfully',
-                        showConfirmButton: false,
-                        timer: 2000
+                    .then(response => {
+                        if (!response.ok) throw new Error('Delete failed');
+                        return response.json();
+                    })
+                    .then(data => {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Permission deleted successfully',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        document.getElementById(`role-row-${id}`).remove();
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Something went wrong!', 'error');
+                        // console.log(error)
                     });
-                    document.getElementById(`role-row-${id}`).remove();
-                })
-                .catch(error => {
-                    Swal.fire('Error', 'Something went wrong!', 'error');
-                    // console.log(error)
-                });
             }
         });
     }

@@ -4,11 +4,12 @@
             <h2 class="text-xl font-semibold text-gray-800">
                 {{ __('Permissions') }}
             </h2>
-
+            @can('Create Permission')
             <a href="{{ route('permission.create') }}"
                 class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
                 Create
             </a>
+            @endcan
         </div>
     </x-slot>
 
@@ -41,14 +42,20 @@
                                         </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-center">
                                             <div class="flex justify-center space-x-2">
+                                                <!-- View -->
+                                                @can('Edit Permission')
                                                 <a href="{{ route('permission.edit', $permission->id) }}"
                                                     class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
                                                     Edit
                                                 </a>
+                                                @endcan
+                                                <!-- Delete -->
+                                                @can('Delete Permission')
                                                 <button onclick="deletePermission('{{ $permission->id }}')"
                                                     class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
                                                     Delete
                                                 </button>
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>

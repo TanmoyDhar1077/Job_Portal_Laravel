@@ -4,11 +4,12 @@
             <h2 class="text-xl font-semibold text-gray-800">
                 {{ __('Job Posts') }}
             </h2>
-
+            @can('Create Jobs')
             <a href="{{ route('jobPost.create') }}"
                 class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
                 Create
             </a>
+            @endcan
         </div>
     </x-slot>
 
@@ -48,22 +49,28 @@
                                     <td class="px-4 py-3 text-center">
                                         <div class="flex justify-center space-x-2">
                                             <!-- View -->
-                                            <a href="{{ route('jobPost.show', $job->id) }}"
-                                                class="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                                                View
-                                            </a>
+                                            @can('Job Details View')
+                                                <a href="{{ route('jobPost.show', $job->id) }}"
+                                                    class="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+                                                    View
+                                                </a>
+                                            @endcan
 
                                             <!-- Edit -->
-                                            <a href="{{ route('jobPost.edit',$job->id) }}"
-                                                class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
-                                                Edit
-                                            </a>
+                                            @can('Edit Jobs')
+                                                <a href="{{ route('jobPost.edit', $job->id) }}"
+                                                    class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
+                                                    Edit
+                                                </a>
+                                            @endcan
 
                                             <!-- Delete -->
+                                            @can('Delete Jobs')
                                             <button onclick="deleteJob('{{ $job->id }}')"
                                                 class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
                                                 Delete
                                             </button>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

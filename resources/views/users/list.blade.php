@@ -48,15 +48,20 @@
                                         <td class="px-4 py-3 whitespace-nowrap text-center">
                                             <div class="flex justify-center space-x-2">
 
-                                                <a href="{{ route('users.edit', $user->id) }}"
-                                                    class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
-                                                    Edit
-                                                </a>
+                                                @can('Edit User')
+                                                    <a href="{{ route('users.edit', $user->id) }}"
+                                                        class="px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700">
+                                                        Edit
+                                                    </a>
+                                                @endcan
 
-                                                <button onclick="deleteUser('{{ $user->id }}')"
-                                                    class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
-                                                    Delete
-                                                </button>
+                                                @can('Delete User')
+                                                    <button onclick="deleteUser('{{ $user->id }}')"
+                                                        class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
+                                                        Delete
+                                                    </button>
+                                                @endcan
+
                                             </div>
                                         </td>
                                     </tr>
