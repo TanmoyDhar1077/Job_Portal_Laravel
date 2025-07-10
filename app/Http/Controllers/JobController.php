@@ -29,6 +29,12 @@ class JobController extends Controller implements HasMiddleware
     {
         $query = JobPost::query();
 
+        // if log in user is employer
+        if (auth()->user()->hasRole('Employer')) {
+            $query->where('user_id', auth()->id());
+        }
+
+        
         // Search functionality
         if ($request->has('search_btn') && $request->filled('search')) {
             $query->where(function ($q) use ($request) {
@@ -93,6 +99,7 @@ class JobController extends Controller implements HasMiddleware
         if ($validator->passes()) {
 
             JobPost::create([
+                'user_id' => auth()->id(), // Assuming the user is logged in
                 'job_title' => $request->job_title,
                 'job_description' => $request->job_description,
                 'salary_range' => $request->salary_range,
