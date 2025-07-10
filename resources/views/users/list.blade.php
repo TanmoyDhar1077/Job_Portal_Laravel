@@ -84,47 +84,6 @@
     </div>
 </x-app-layout>
 
-function deleteUser(id) {
-Swal.fire({
-title: 'Are you sure?',
-text: "This user will be deleted permanently!",
-icon: 'warning',
-showCancelButton: true,
-confirmButtonColor: '#d33',
-cancelButtonColor: '#3085d6',
-confirmButtonText: 'Yes, delete it!',
-}).then((result) => {
-if (result.isConfirmed) {
-fetch(`/users/${id}`, {
-method: 'DELETE',
-headers: {
-'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-'Accept': 'application/json'
-}
-})
-.then(response => {
-if (!response.ok) throw new Error('Delete failed');
-return response.json();
-})
-.then(data => {
-Swal.fire({
-toast: true,
-position: 'top-end',
-icon: 'success',
-title: 'User deleted successfully',
-showConfirmButton: false,
-timer: 2000
-});
-document.getElementById(`user-row-${id}`).remove();
-})
-.catch(error => {
-Swal.fire('Error', 'Something went wrong!', 'error');
-console.error(error);
-});
-}
-});
-}
-</script> -->
 <script>
     function deleteUser(id) {
         Swal.fire({
