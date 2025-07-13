@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\JobPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -133,8 +134,12 @@ class JobController extends Controller implements HasMiddleware
      */
     public function show(string $id)
     {
+
         $job = JobPost::findOrFail($id);
-        return view('jobs.show', ['job' => $job]);
+        $alreadyApplied = Application::where('user_id', auth()->id())
+            ->where('job_post_id', $job->id)
+            ->exists();
+        return view('jobs.show', ['job' => $job, 'alreadyApplied' => $alreadyApplied]);
     }
 
     /**

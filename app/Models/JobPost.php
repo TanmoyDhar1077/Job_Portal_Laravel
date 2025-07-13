@@ -29,4 +29,10 @@ class JobPost extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
 }

@@ -6,7 +6,7 @@
             </h2>
 
             <a href="{{ route('jobPost.index') }}"
-               class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
+                class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
                 Back to List
             </a>
         </div>
@@ -14,6 +14,7 @@
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <x-message />
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-800">
 
@@ -54,7 +55,8 @@
 
                     <div>
                         <span class="font-semibold">Experience Required:</span>
-                        <div>{{ $job->experience_required ? $job->experience_required . ' year(s)' : 'Not specified' }}</div>
+                        <div>{{ $job->experience_required ? $job->experience_required . ' year(s)' : 'Not specified' }}
+                        </div>
                     </div>
 
                     <div>
@@ -70,7 +72,8 @@
                     <div>
                         <span class="font-semibold">Status:</span>
                         <div>
-                            <span class="px-2 py-1 rounded text-xs {{ $job->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            <span
+                                class="px-2 py-1 rounded text-xs {{ $job->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                 {{ $job->is_active ? 'Active' : 'Inactive' }}
                             </span>
                         </div>
@@ -89,6 +92,24 @@
                         {!! nl2br(e($job->job_description)) ?? 'No description provided.' !!}
                     </div>
                 </div>
+                @can('Apply Job')
+
+
+                    @if ($alreadyApplied)
+                        <div class="mt-6">
+                            <button class="px-4 py-2 bg-green-400 text-white rounded-lg cursor-not-allowed" disabled>
+                                Already Applied
+                            </button>
+                        </div>
+                    @else
+                        <div class="mt-6">
+                            <a href="{{ route('jobs.apply', $job->id) }}"
+                                class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg">
+                                Apply Now
+                            </a>
+                        </div>
+                    @endif
+                @endcan
             </div>
         </div>
     </div>

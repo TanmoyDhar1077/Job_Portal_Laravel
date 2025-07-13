@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -33,28 +34,33 @@ Route::middleware('auth')->group(function () {
     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-    Route::post('/roles/{id}', [RoleController::class,'update'])->name('roles.update');
+    Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
 
     // Jobs
-    Route::get('/jobs',[JobController::class,'index'])->name('jobPost.index');
-    Route::post('/jobs',[JobController::class,'store'])->name('jobPost.store');
-    Route::get('/jobs/create',[JobController::class,'create'])->name('jobPost.create');
+    Route::get('/jobs', [JobController::class, 'index'])->name('jobPost.index');
+    Route::post('/jobs', [JobController::class, 'store'])->name('jobPost.store');
+    Route::get('/jobs/create', [JobController::class, 'create'])->name('jobPost.create');
     Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobPost.show');
     Route::get('/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobPost.edit');
     Route::post('/jobs/{id}', [JobController::class, 'update'])->name('jobPost.update');
     Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('jobPost.destroy');
 
     // Users
-    Route::get('/users',[UserController::class,'index'])->name('users.index');
-    // Route::post('/jobs',[JobController::class,'store'])->name('jobPost.store');
-    // Route::get('/jobs/create',[JobController::class,'create'])->name('jobPost.create');
-    // Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobPost.show');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
+    // Applications
+    Route::get('/jobs/{job}/apply', [ApplicationController::class, 'create'])->name('jobs.apply');
+    Route::post('/jobs/{job}/apply', [ApplicationController::class, 'store'])->name('jobs.apply.store');
+    Route::get('/employer/jobs/{job}/applicants', [ApplicationController::class, 'showApplicants'])
+        ->name('jobs.applicants')
+        ->middleware('role:Employer');
+    // Show application for candidate
+     Route::get('/my-applications', [ApplicationController::class, 'showApplicationForCandidate'])->name('jobs.application.show');
 });
 
 require __DIR__ . '/auth.php';
