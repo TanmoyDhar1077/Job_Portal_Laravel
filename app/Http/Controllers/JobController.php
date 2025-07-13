@@ -84,6 +84,7 @@ class JobController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'job_title' => 'required|min:3|max:255',
+            'job_category' => 'required|min:3|max:255|string',
             'job_description' => 'nullable|string',
             'company_name' => 'required|string|min:3|max:255',
             'salary_range' => 'required|string',
@@ -101,6 +102,7 @@ class JobController extends Controller implements HasMiddleware
             JobPost::create([
                 'user_id' => auth()->id(), // Assuming the user is logged in
                 'job_title' => $request->job_title,
+                'job_category' => $request->job_category,
                 'job_description' => $request->job_description,
                 'salary_range' => $request->salary_range,
                 'location' => $request->location,
@@ -145,6 +147,7 @@ class JobController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'job_title' => 'required|min:3|max:255',
+            'job_category' => 'required|min:3|max:255|string',
             'job_description' => 'nullable|string',
             'company_name' => 'required|string|min:3|max:255',
             'salary_range' => 'required|string',
@@ -166,6 +169,7 @@ class JobController extends Controller implements HasMiddleware
             $job = JobPost::findOrFail($id);
             $job->update([
                 'job_title' => $request->job_title,
+                'job_category' => $request->job_category,
                 'job_description' => $request->job_description,
                 'company_name' => $request->company_name,
                 'salary_range' => $request->salary_range,

@@ -23,6 +23,11 @@
                     </div>
 
                     <div>
+                        <span class="font-semibold">Job Category:</span>
+                        <div>{{ $job->job_category }}</div>
+                    </div>
+
+                    <div>
                         <span class="font-semibold">Company Name:</span>
                         <div>{{ $job->company_name }}</div>
                     </div>

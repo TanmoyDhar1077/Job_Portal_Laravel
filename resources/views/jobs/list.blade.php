@@ -83,6 +83,7 @@
                             <tr>
                                 <th class="px-4 py-3 text-left">#</th>
                                 <th class="px-4 py-3 text-left">Title</th>
+                                <th class="px-4 py-3 text-left">Job Category</th>
                                 <th class="px-4 py-3 text-left">Location</th>
                                 <th class="px-4 py-3 text-left">Type</th>
                                 <th class="px-4 py-3 text-left">Deadline</th>
@@ -96,6 +97,7 @@
                                 <tr id="job-row-{{ $job->id }}">
                                     <td class="px-4 py-3">{{ $loop->iteration }}</td>
                                     <td class="px-4 py-3">{{ $job->job_title }}</td>
+                                    <td class="px-4 py-3">{{ $job->job_category }}</td>
                                     <td class="px-4 py-3">{{ $job->location }}</td>
                                     <td class="px-4 py-3 capitalize">{{ $job->job_type }}</td>
                                     <td class="px-4 py-3">{{ $job->application_deadline ?? 'N/A' }}</td>
