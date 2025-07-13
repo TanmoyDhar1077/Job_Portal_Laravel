@@ -8,8 +8,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('job_posts', function (Blueprint $table) {
-            if (!Schema::hasColumn('job_posts', 'user_id')) {
-                $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
+            if (!Schema::hasColumn('job_posts', 'job_category')) {
+                $table->string('job_category')->after('job_title')->nullable();
             }
         });
     }
@@ -17,8 +17,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('job_posts', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
+            $table->dropColumn('job_category');
         });
     }
 };
