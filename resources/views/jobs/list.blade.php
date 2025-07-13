@@ -16,15 +16,19 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center mb-6">
+
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
                 <!-- Filter Section -->
-                <form method="GET" action="{{ route('jobPost.index') }}" class="flex flex-wrap items-center gap-3">
+                <form method="GET" action="{{ route('jobPost.index') }}"
+                    class="bg-white p-4 rounded-xl shadow-md border border-gray-200 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+
                     <!-- Job Type -->
                     <div>
                         <label for="job_type" class="block text-sm font-medium text-gray-700 mb-1">Job Type</label>
                         <select name="job_type" id="job_type"
-                            class="w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-slate-600 focus:border-slate-600 text-sm">
                             <option value="">All Types</option>
                             @foreach ($jobTypes as $type)
                                 <option value="{{ $type }}" {{ request('job_type') == $type ? 'selected' : '' }}>
@@ -38,7 +42,7 @@
                     <div>
                         <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
                         <select name="location" id="location"
-                            class="w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-slate-600 focus:border-slate-600 text-sm">
                             <option value="">All Locations</option>
                             @foreach ($locations as $location)
                                 <option value="{{ $location }}" {{ request('location') == $location ? 'selected' : '' }}>
@@ -48,10 +52,25 @@
                         </select>
                     </div>
 
+                    <!-- Job Category -->
+                    <div>
+                        <label for="job_category" class="block text-sm font-medium text-gray-700 mb-1">Job
+                            Category</label>
+                        <select name="job_category" id="job_category"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-slate-600 focus:border-slate-600 text-sm">
+                            <option value="">All Categories</option>
+                            @foreach ($jobCategories as $category)
+                                <option value="{{ $category }}" {{ request('job_category') == $category ? 'selected' : '' }}>
+                                    {{ $category }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <!-- Filter Button -->
-                    <div class="mt-5 md:mt-6">
+                    <div class="flex items-end">
                         <button type="submit" name="filter_btn"
-                            class="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-md text-sm shadow-sm">
+                            class="w-full px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg text-sm font-medium shadow-md transition">
                             Filter
                         </button>
                     </div>
@@ -59,22 +78,26 @@
 
                 <!-- Search Section -->
                 <form method="GET" action="{{ route('jobPost.index') }}"
-                    class="flex items-end justify-end gap-3 mt-4 md:mt-0">
-                    <div class="w-full md:w-auto">
+                    class="bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col sm:flex-row gap-4 sm:items-end justify-between items-center">
+
+                    <div class="w-full">
                         <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
                         <input type="text" name="search" id="search" value="{{ request('search') }}"
                             placeholder="Search jobs..."
-                            class="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-slate-600 focus:border-slate-600 text-sm">
                     </div>
 
-                    <div>
+                    <div class="w-full sm:w-auto">
                         <button type="submit" name="search_btn"
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm shadow-sm">
+                            class="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium shadow-md transition">
                             Search
                         </button>
                     </div>
                 </form>
+
             </div>
+
+
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mx-4 md:mx-0">
                 <div class="overflow-x-auto bg-white rounded-xl shadow-md">

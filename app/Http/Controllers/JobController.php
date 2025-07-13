@@ -39,6 +39,7 @@ class JobController extends Controller implements HasMiddleware
         if ($request->has('search_btn') && $request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('job_title', 'like', "%{$request->search}%")
+                ->orWhere('job_category', 'like', "%{$request->search}%")
                     ->orWhere('company_name', 'like', "%{$request->search}%")
                     ->orWhere('location', 'like', "%{$request->search}%");
             });
@@ -53,6 +54,9 @@ class JobController extends Controller implements HasMiddleware
             if ($request->filled('location')) {
                 $query->where('location', $request->location);
             }
+            if ($request->filled('job_category')) {
+                $query->where('job_category', $request->job_category);
+            }
         }
 
         $jobs = $query->latest()->paginate(10);
@@ -60,11 +64,13 @@ class JobController extends Controller implements HasMiddleware
         // Pass job types and unique locations to the view
         $jobTypes = JobPost::select('job_type')->distinct()->pluck('job_type');
         $locations = JobPost::select('location')->distinct()->pluck('location');
+        $jobCategories = JobPost::select('job_category')->distinct()->pluck('job_category');
 
         return view('jobs.list', [
             'jobs' => $jobs,
             'jobTypes' => $jobTypes,
             'locations' => $locations,
+            'jobCategories' => $jobCategories,
         ]);
     }
 
