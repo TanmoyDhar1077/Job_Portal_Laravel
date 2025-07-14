@@ -141,6 +141,14 @@
                                                 </a>
                                             @endcan
 
+                                            <!-- View Applicants (Only for job owner/employer) -->
+                                            @if(auth()->user()->hasRole('Employer') && $job->user_id == auth()->id())
+                                                <a href="{{ route('jobs.applicants', $job->id) }}"
+                                                    class="px-3 py-1 text-sm font-medium text-white bg-purple-600 rounded hover:bg-purple-700">
+                                                    Applicants
+                                                </a>
+                                            @endif
+
                                             <!-- Edit -->
                                             @can('Edit Jobs')
                                                 <a href="{{ route('jobPost.edit', $job->id) }}"

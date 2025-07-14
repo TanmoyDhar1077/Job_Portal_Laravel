@@ -53,9 +53,10 @@ class ApplicationController extends Controller
     public function showApplicants($jobId)
     {
         $job = JobPost::where('user_id', auth()->id())->findOrFail($jobId);
-        $applications = $job->applications()->with('user')->get();
+        $applications = $job->applications()->with('user')->paginate(10);
+        
 
-        return view('employer.applicants', compact('job', 'applications'));
+        return view('jobApplication.employer.applicants', compact('job', 'applications'));
     }
 
     public function showApplicationForCandidate()
@@ -64,4 +65,25 @@ class ApplicationController extends Controller
 
         return view('jobApplication.candidate.myApplications', compact('applications'));
     }
+
+    public function downloadCV(Application $application)
+    {
+        // Check if user is authorized to view this CV
+        // Either the user is the job owner (employer) or the applicant themselves
+        $job = $application->job;
+        
+        if (auth()->id() !== $job->user_id && auth()->id() !== $application->user_id) {
+            abort(403, 'Unauthorized to view this CV');
+        }
+
+        $filePath = storage_path('app/public/' . $application->cv_path);
+        
+        if (!file_exists($filePath)) {
+            abort(404, 'CV file not found');
+        }
+
+        return response()->file($filePath);
+    }
+
 }
+
