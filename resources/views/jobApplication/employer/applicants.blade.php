@@ -5,8 +5,8 @@
                 {{ __('Applicants for: ' . $job->job_title) }}
             </h2>
             <a href="{{ route('jobPost.index') }}"
-                class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-md hover:bg-green-700 transition">
-                ← Back to Jobs
+                class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
+                 Back to Jobs
             </a>
         </div>
     </x-slot>
