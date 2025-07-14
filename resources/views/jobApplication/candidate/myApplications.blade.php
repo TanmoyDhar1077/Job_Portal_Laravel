@@ -30,9 +30,11 @@
                                 <td class="px-4 py-3">{{ $application->job->company_name ?? 'N/A' }}</td>
                                 <td class="px-4 py-3">{{ $application->created_at->format('d M Y') }}</td>
                                 <td class="px-4 py-3">
-                                    <span
-                                        class="px-2 py-1 rounded text-xs {{ $application->status === 'Approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                        {{ $application->status ?? 'Pending' }}
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium
+                                            @if($application->status === 'shortlisted') bg-green-100 text-green-800
+                                            @elseif($application->status === 'rejected') bg-red-100 text-red-800
+                                            @else bg-yellow-100 text-yellow-800 @endif">
+                                        {{ ucfirst($application->status) }}
                                     </span>
                                 </td>
                             </tr>
@@ -47,4 +49,3 @@
         </div>
     </div>
 </x-app-layout>
-

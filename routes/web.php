@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:Employer');
     // Serve CV files securely
     Route::get('/applications/{application}/cv', [ApplicationController::class, 'downloadCV'])->name('applications.cv');
+    // Update application status
+    Route::patch('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
     // Show application for candidate
      Route::get('/my-applications', [ApplicationController::class, 'showApplicationForCandidate'])->name('jobs.application.show');
 });

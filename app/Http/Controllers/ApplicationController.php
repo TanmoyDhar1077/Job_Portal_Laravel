@@ -15,8 +15,7 @@ class ApplicationController extends Controller
 
     public function create($id)
     {
-
-        $job = JobPost::findOrFail($id);
+        $job = JobPost::where('is_active', true)->findOrFail($id);
 
         return view('jobs.apply', compact('job'));
     }
@@ -29,7 +28,7 @@ class ApplicationController extends Controller
             'cv' => 'required|mimes:pdf,doc,docx,png,jpg,jpeg|max:2048',
         ]);
 
-        $job = JobPost::findOrFail($jobId);
+        $job = JobPost::where('is_active', true)->findOrFail($jobId);
 
         // Prevent multiple applications
         if (Application::where('user_id', Auth::id())->where('job_post_id', $jobId)->exists()) {
@@ -61,7 +60,14 @@ class ApplicationController extends Controller
 
     public function showApplicationForCandidate()
     {
-        $applications = Application::where('user_id', auth()->id())->with('job')->get();
+        $applications = Application::where('user_id', auth()->id())
+            ->with(['job' => function ($query) {
+                $query->where('is_active', true);
+            }])
+            ->whereHas('job', function ($query) {
+                $query->where('is_active', true);
+            })
+            ->get();
 
         return view('jobApplication.candidate.myApplications', compact('applications'));
     }
@@ -83,6 +89,26 @@ class ApplicationController extends Controller
         }
 
         return response()->file($filePath);
+    }
+
+    public function updateStatus(Request $request, Application $application)
+    {
+        // Check if user is authorized (only job owner can update status)
+        $job = $application->job;
+        
+        if (auth()->id() !== $job->user_id) {
+            abort(403, 'Unauthorized to update this application status');
+        }
+
+        $request->validate([
+            'status' => 'required|in:pending,shortlisted,rejected'
+        ]);
+
+        $application->update([
+            'status' => $request->status
+        ]);
+
+        return back()->with('success', 'Application status updated successfully!');
     }
 
 }

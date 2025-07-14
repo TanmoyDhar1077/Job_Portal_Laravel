@@ -33,6 +33,9 @@ class JobController extends Controller implements HasMiddleware
         // if log in user is employer
         if (auth()->user()->hasRole('Employer')) {
             $query->where('user_id', auth()->id());
+        } else {
+            // For candidates and other users, only show active jobs
+            $query->where('is_active', true);
         }
 
         
@@ -134,8 +137,15 @@ class JobController extends Controller implements HasMiddleware
      */
     public function show(string $id)
     {
-
         $job = JobPost::findOrFail($id);
+        
+        // If user is not the job owner and job is inactive, deny access
+        if (!auth()->user()->hasRole('Employer') || $job->user_id !== auth()->id()) {
+            if (!$job->is_active) {
+                abort(404, 'Job not found or no longer available');
+            }
+        }
+        
         $alreadyApplied = Application::where('user_id', auth()->id())
             ->where('job_post_id', $job->id)
             ->exists();
