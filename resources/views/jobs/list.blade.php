@@ -108,6 +108,7 @@
                                 <th class="px-4 py-3 text-left">Title</th>
                                 <th class="px-4 py-3 text-left">Job Category</th>
                                 <th class="px-4 py-3 text-left">Location</th>
+                                <th class="px-4 py-3 text-left">Views</th>
                                 <th class="px-4 py-3 text-left">Type</th>
                                 <th class="px-4 py-3 text-left">Deadline</th>
                                 <th class="px-4 py-3 text-left">Status</th>
@@ -122,6 +123,15 @@
                                     <td class="px-4 py-3">{{ $job->job_title }}</td>
                                     <td class="px-4 py-3">{{ $job->job_category }}</td>
                                     <td class="px-4 py-3">{{ $job->location }}</td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 text-blue-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <span class="text-blue-600 font-medium">{{ $job->views ?? 0 }}</span>
+                                        </div>
+                                    </td>
                                     <td class="px-4 py-3 capitalize">{{ $job->job_type }}</td>
                                     <td class="px-4 py-3">{{ $job->application_deadline ?? 'N/A' }}</td>
                                     <td class="px-4 py-3">
@@ -146,6 +156,10 @@
                                                 <a href="{{ route('jobs.applicants', $job->id) }}"
                                                     class="px-3 py-1 text-sm font-medium text-white bg-purple-600 rounded hover:bg-purple-700">
                                                     Applicants
+                                                </a>
+                                                <a href="{{ route('jobPost.analytics', $job->id) }}"
+                                                    class="px-3 py-1 text-sm font-medium text-white bg-orange-600 rounded hover:bg-orange-700">
+                                                    Analytics
                                                 </a>
                                             @endif
 

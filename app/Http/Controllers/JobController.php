@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use App\Models\JobPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -31,8 +32,8 @@ class JobController extends Controller implements HasMiddleware
         $query = JobPost::query();
 
         // if log in user is employer
-        if (auth()->user()->hasRole('Employer')) {
-            $query->where('user_id', auth()->id());
+        if (Auth::user()->hasRole('Employer')) {
+            $query->where('user_id', Auth::id());
         } else {
             // For candidates and other users, only show active jobs
             $query->where('is_active', true);
@@ -110,7 +111,7 @@ class JobController extends Controller implements HasMiddleware
         if ($validator->passes()) {
 
             JobPost::create([
-                'user_id' => auth()->id(), // Assuming the user is logged in
+                'user_id' => Auth::id(), // Assuming the user is logged in
                 'job_title' => $request->job_title,
                 'job_category' => $request->job_category,
                 'job_description' => $request->job_description,
@@ -140,13 +141,22 @@ class JobController extends Controller implements HasMiddleware
         $job = JobPost::findOrFail($id);
         
         // If user is not the job owner and job is inactive, deny access
-        if (!auth()->user()->hasRole('Employer') || $job->user_id !== auth()->id()) {
+        if (!Auth::user()->hasRole('Employer') || $job->user_id !== Auth::id()) {
             if (!$job->is_active) {
                 abort(404, 'Job not found or no longer available');
             }
         }
+
+        // Increment views count only if the viewer is not the job owner
+        if (Auth::id() !== $job->user_id) {
+            $job->incrementViews(
+                Auth::id(), 
+                request()->ip(), 
+                request()->userAgent()
+            );
+        }
         
-        $alreadyApplied = Application::where('user_id', auth()->id())
+        $alreadyApplied = Application::where('user_id', Auth::id())
             ->where('job_post_id', $job->id)
             ->exists();
         return view('jobs.show', ['job' => $job, 'alreadyApplied' => $alreadyApplied]);
@@ -215,5 +225,42 @@ class JobController extends Controller implements HasMiddleware
         $job = JobPost::findOrFail($id);
         $job->delete();
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Show view analytics for a job post (only for job owner)
+     */
+    public function viewAnalytics(string $id)
+    {
+        $job = JobPost::findOrFail($id);
+        
+        // Check if user is the job owner
+        if (Auth::id() !== $job->user_id) {
+            abort(403, 'Unauthorized access');
+        }
+
+        // Get view analytics
+        $viewStats = [
+            'total_views' => $job->views ?? 0,
+            'unique_users' => $job->jobViews()->whereNotNull('user_id')->distinct('user_id')->count(),
+            'anonymous_views' => $job->jobViews()->whereNull('user_id')->count(),
+            'views_today' => $job->jobViews()->whereDate('created_at', today())->count(),
+            'views_this_week' => $job->jobViews()->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count(),
+            'views_this_month' => $job->jobViews()->whereMonth('created_at', now()->month)->count(),
+        ];
+
+        // Get daily views for the last 30 days
+        $dailyViews = $job->jobViews()
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as views')
+            ->where('created_at', '>=', now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        return view('jobs.analytics', [
+            'job' => $job,
+            'viewStats' => $viewStats,
+            'dailyViews' => $dailyViews
+        ]);
     }
 }

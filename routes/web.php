@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobPost.edit');
     Route::post('/jobs/{id}', [JobController::class, 'update'])->name('jobPost.update');
     Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('jobPost.destroy');
+    Route::get('/jobs/{id}/analytics', [JobController::class, 'viewAnalytics'])->name('jobPost.analytics');
 
     // Users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
