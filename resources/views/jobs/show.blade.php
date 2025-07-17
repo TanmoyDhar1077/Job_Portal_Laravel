@@ -84,7 +84,8 @@
                         <div>{{ $job->created_at->format('d-m-Y h:i A') }}</div>
                     </div>
 
-                    @if(auth()->user()->hasRole('Employer') && $job->user_id == auth()->id())
+                    {{-- @if(auth()->user()->hasRole('Employer') && $job->user_id == auth()->id()) --}}
+                    @can('Viewers Seen')
                     <div>
                         <span class="font-semibold">Views:</span>
                         <div class="flex items-center">
@@ -95,7 +96,8 @@
                             <span class="text-blue-600 font-medium">{{ $job->views ?? 0 }}</span>
                         </div>
                     </div>
-                    @endif
+                    @endcan
+                    {{-- @endif --}}
 
                 </div>
 
