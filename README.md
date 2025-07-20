@@ -128,12 +128,12 @@ Update your `.env` file with database credentials:
 ```env
 DB_CONNECTION=sqlite
 # Or for MySQL:
-# DB_CONNECTION=mysql
-# DB_HOST=127.0.0.1
-# DB_PORT=3306
-# DB_DATABASE=job_portal
-# DB_USERNAME=root
-# DB_PASSWORD=
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=job_portal
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
 ### Mailtrap Configuration
