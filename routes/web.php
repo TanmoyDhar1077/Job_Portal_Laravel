@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -12,9 +13,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -65,7 +67,7 @@ Route::middleware('auth')->group(function () {
     // Update application status
     Route::patch('/applications/{application}/status', [ApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
     // Show application for candidate
-     Route::get('/my-applications', [ApplicationController::class, 'showApplicationForCandidate'])->name('jobs.application.show');
+    Route::get('/my-applications', [ApplicationController::class, 'showApplicationForCandidate'])->name('jobs.application.show');
 });
 
 require __DIR__ . '/auth.php';

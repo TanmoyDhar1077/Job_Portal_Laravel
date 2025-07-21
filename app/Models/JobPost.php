@@ -44,6 +44,8 @@ class JobPost extends Model
         return $this->hasMany(JobView::class);
     }
 
+   
+
     /**
      * Increment the view count for this job post
      * Also tracks individual views to prevent duplicate counting
@@ -61,9 +63,9 @@ class JobPost extends Model
         // For logged-in users, prevent duplicate views
         if ($userId) {
             $existing = JobView::where('job_post_id', $this->id)
-                               ->where('user_id', $userId)
-                               ->exists();
-            
+                ->where('user_id', $userId)
+                ->exists();
+
             if (!$existing) {
                 JobView::create($viewData);
                 $this->increment('views');
@@ -71,10 +73,10 @@ class JobPost extends Model
         } else {
             // For anonymous users, allow views but try to prevent duplicate from same IP
             $recentView = JobView::where('job_post_id', $this->id)
-                                 ->where('ip_address', $ipAddress)
-                                 ->where('created_at', '>', now()->subHours(24))
-                                 ->exists();
-            
+                ->where('ip_address', $ipAddress)
+                ->where('created_at', '>', now()->subHours(24))
+                ->exists();
+
             if (!$recentView) {
                 JobView::create($viewData);
                 $this->increment('views');
